@@ -54,7 +54,7 @@ async def private_receive_handler(c: Client, m: Message):
 
     # Authorization Check
     if not await db.is_auth_user(user_id):
-        await m.reply_text("You are not an authorized user.")
+        await m.reply_text(f"<b>You are not an authorized user to perform task.</b>")
         return
 
     if Var.UPDATES_CHANNEL != "None":

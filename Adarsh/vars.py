@@ -30,7 +30,7 @@ class Var(object):
     else:
         ON_HEROKU = False
     FQDN = str(getenv('FQDN', BIND_ADRESS)) if not ON_HEROKU or getenv('FQDN') else (APP_NAME + '.herokuapp.com' if APP_NAME else '')
-    APP_URL = "https://ydfilestream-c148337d68c9.herokuapp.com"
+    APP_URL = "https://delicate-dulsea-mrspidy-5f88fdde.koyeb.app"
     URL = APP_URL.format(FQDN) if ON_HEROKU or NO_PORT else \
         APP_URL.format(FQDN, PORT)
     DATABASE_URL = str(getenv('DATABASE_URL', 'mongodb+srv://spidy:MongoDB1432@cluster0.khbbz.mongodb.net/?retryWrites=true&w=majority'))
