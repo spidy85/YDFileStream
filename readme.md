@@ -39,8 +39,6 @@
 `API_ID` : Enter Your Telegram API ID.
 
 `API_HASH` : Enter Your Telegram API HASH.
-  
-`MY_PASS` : Enter Bot Password or leave Empty
 
 `BOT_TOKEN` : Enter Your Bot Token
 

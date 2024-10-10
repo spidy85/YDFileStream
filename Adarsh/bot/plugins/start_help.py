@@ -4,7 +4,6 @@ from Adarsh.vars import Var
 import logging
 import random
 logger = logging.getLogger(__name__)
-from Adarsh.bot.plugins.stream import MY_PASS
 from Adarsh.utils.human_readable import humanbytes
 from Adarsh.utils.database import Database
 from pyrogram import filters
