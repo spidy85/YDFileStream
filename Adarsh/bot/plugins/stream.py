@@ -16,45 +16,43 @@ db = Database(Var.DATABASE_URL, Var.name)
 
 
 MY_PASS = os.environ.get("MY_PASS", 'SpikA')
-pass_dict = {}
 pass_db = Database(Var.DATABASE_URL, "ag_passwords")
 
-
-@StreamBot.on_message((filters.command("login")) , group=4)
+@StreamBot.on_message(filters.command("login") & filters.private, group=4)
 async def login_handler(c: Client, m: Message):
+    ag = await m.reply_text(
+        "Please send me the password.\n\nIf you don't know it, check the MY_PASS variable in Heroku.\n"
+        "(You can use /cancel to cancel the process.)"
+    )
     try:
-        try:
-            ag = await m.reply_text("Now send me password.\n\n If You don't know check the MY_PASS Variable in heroku \n\n(You can use /cancel command to cancel the process)")
-            _text = await c.listen(m.chat.id, filters=filters.text, timeout=90)
-            if _text.text:
-                textp = _text.text
-                if textp == "/cancel":
-                   await ag.edit("Process Cancelled Successfully")
-                   return
-            else:
-                return
-        except TimeoutError:
-            await ag.edit("I can't wait more for password, try again")
+        _text = await c.listen(m.chat.id, filters.text, timeout=90)
+        if _text.text == "/cancel":
+            await ag.edit("Process Cancelled Successfully.")
             return
+
+        textp = _text.text
         if textp == MY_PASS:
             await pass_db.add_user_pass(m.chat.id, textp)
-            ag_text = "yeah! you entered the password correctly"
+            await ag.edit("Yeah! You entered the password correctly.")
         else:
-            ag_text = "Wrong password, try again"
-        await ag.edit(ag_text)
+            await ag.edit("Wrong password, please try again.")
+    except asyncio.TimeoutError:
+        await ag.edit("I can't wait any longer for the password. Please try again.")
     except Exception as e:
-        print(e)
+        print(f"Error: {e}")
+        await ag.edit("An error occurred, please try again later.")
 
-@StreamBot.on_message((filters.private) & (filters.document | filters.video | filters.audio | filters.photo) , group=4)
+@StreamBot.on_message(filters.private & (filters.document | filters.video | filters.audio | filters.photo), group=4)
 async def private_receive_handler(c: Client, m: Message):
-    if MY_PASS:
-        check_pass = await pass_db.get_user_pass(m.chat.id)
-        if check_pass== None:
-            await m.reply_text("Login first using /login cmd \n don\'t know the pass? request it from the Developer")
-            return
-        if check_pass != MY_PASS:
-            await pass_db.delete_user(m.chat.id)
-            return
+    check_pass = await pass_db.get_user_pass(m.chat.id)
+    
+    if not check_pass:
+        await m.reply_text("Please log in first using the /login command.\nIf you don't know the password, request it from the developer.")
+        return
+    elif check_pass != MY_PASS:
+        await pass_db.delete_user(m.chat.id)
+        await m.reply_text("Session expired. Please log in again.")
+        return
     if not await db.is_user_exist(m.from_user.id):
         await db.add_user(m.from_user.id)
         await c.send_message(
