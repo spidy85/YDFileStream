@@ -23,7 +23,7 @@ async def root_route_handler(_):
         {
             "server_status": "running",
             "uptime": get_readable_time(time.time() - StartTime),
-            "telegram_bot": "@" + StreamBot.username,
+            "Mr_SPIDY": "@" + StreamBot.username,
             "connected_bots": len(multi_clients),
             "loads": dict(
                 ("bot" + str(c + 1), l)
