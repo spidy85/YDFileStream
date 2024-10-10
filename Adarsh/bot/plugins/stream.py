@@ -25,7 +25,7 @@ async def login_handler(c: Client, m: Message):
         "(You can use /cancel to cancel the process.)"
     )
     try:
-        _text = await c.listen(m.chat.id, filters.text, timeout=90)
+        _text = await c.listen(m.chat.id, timeout=90)  # Just listen for any text message
         if _text.text == "/cancel":
             await ag.edit("Process Cancelled Successfully.")
             return
