@@ -7,6 +7,7 @@ class Database:
         self._client = motor.motor_asyncio.AsyncIOMotorClient(uri)
         self.db = self._client[database_name]
         self.col = self.db.users
+        self.auth_col = self.db.auth_users
 
     def new_user(self, id):
         return dict(
@@ -40,3 +41,16 @@ class Database:
 
     async def delete_user(self, user_id):
         await self.col.delete_many({'id': int(user_id)})
+
+    # Add Auth User
+    async def add_auth_user(self, user_id):
+        if not await self.is_auth_user(user_id):
+            await self.auth_col.insert_one({'id': user_id})
+
+    # Remove Auth User
+    async def remove_auth_user(self, user_id):
+        await self.auth_col.delete_one({'id': user_id})
+
+    # Check if user is auth
+    async def is_auth_user(self, user_id):
+        return await self.auth_col.find_one({'id': user_id}) is not None

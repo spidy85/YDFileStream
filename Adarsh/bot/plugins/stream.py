@@ -14,51 +14,49 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from Adarsh.utils.file_properties import get_name, get_hash, get_media_file_size
 db = Database(Var.DATABASE_URL, Var.name)
 
+@StreamBot.on_message(filters.command('auth') & filters.private)
+async def add_auth_user_handler(c: Client, m: Message):
+    if len(m.command) != 2:
+        await m.reply_text("Usage: /auth_user <user_id>")
+        return
+    
+    user_id = int(m.command[1])
+    await db.add_auth_user(user_id)
+    await m.reply_text(f"User {user_id} has been authorized.")
 
-MY_PASS = os.environ.get("MY_PASS", 'SpikA')
-pass_db = Database(Var.DATABASE_URL, "ag_passwords")
-
-@StreamBot.on_message(filters.command("login") & filters.private, group=4)
-async def login_handler(c: Client, m: Message):
-    ag = await m.reply_text(
-        "Please send me the password.\n\nIf you don't know it, check the MY_PASS variable in Heroku.\n"
-        "(You can use /cancel to cancel the process.)"
-    )
-    try:
-        _text = await c.listen(m.chat.id, timeout=90)  # Just listen for any text message
-        if _text.text == "/cancel":
-            await ag.edit("Process Cancelled Successfully.")
-            return
-
-        textp = _text.text
-        if textp == MY_PASS:
-            await pass_db.add_user_pass(m.chat.id, textp)
-            await ag.edit("Yeah! You entered the password correctly.")
-        else:
-            await ag.edit("Wrong password, please try again.")
-    except asyncio.TimeoutError:
-        await ag.edit("I can't wait any longer for the password. Please try again.")
-    except Exception as e:
-        print(f"Error: {e}")
-        await ag.edit("An error occurred, please try again later.")
+@StreamBot.on_message(filters.command('remove') & filters.private)
+async def remove_auth_user_handler(c: Client, m: Message):
+    if len(m.command) != 2:
+        await m.reply_text("Usage: /remove_auth <user_id>")
+        return
+    
+    user_id = int(m.command[1])
+    await db.remove_auth_user(user_id)
+    await m.reply_text(f"User {user_id} has been removed from the authorized list.")
 
 @StreamBot.on_message(filters.private & (filters.document | filters.video | filters.audio | filters.photo), group=4)
 async def private_receive_handler(c: Client, m: Message):
-    check_pass = await pass_db.get_user_pass(m.chat.id)
-    
-    if not check_pass:
-        await m.reply_text("Please log in first using the /login command.\nIf you don't know the password, request it from the developer.")
-        return
-    elif check_pass != MY_PASS:
-        await pass_db.delete_user(m.chat.id)
-        await m.reply_text("Session expired. Please log in again.")
-        return
+
     if not await db.is_user_exist(m.from_user.id):
         await db.add_user(m.from_user.id)
         await c.send_message(
             Var.BIN_CHANNEL,
             f"New User Joined! : \n\n Name : [{m.from_user.first_name}](tg://user?id={m.from_user.id}) Started Your Bot!!"
         )
+    user_id = m.from_user.id
+
+    if not await db.is_user_exist(user_id):
+        await db.add_user(user_id)
+        await c.send_message(
+            Var.BIN_CHANNEL,
+            f"New User Joined! : \n\n Name : [{m.from_user.first_name}](tg://user?id={user_id}) Started Your Bot!!"
+        )
+
+    # Authorization Check
+    if not await db.is_auth_user(user_id):
+        await m.reply_text("You are not an authorized user.")
+        return
+
     if Var.UPDATES_CHANNEL != "None":
         try:
             user = await c.get_chat_member(Var.UPDATES_CHANNEL, m.chat.id)
