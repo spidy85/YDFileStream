@@ -17,7 +17,7 @@ db = Database(Var.DATABASE_URL, Var.name)
 @StreamBot.on_message(filters.command('auth') & filters.private)
 async def add_auth_user_handler(c: Client, m: Message):
     if len(m.command) != 2:
-        await m.reply_text("Usage: /auth_user <user_id>")
+        await m.reply_text("Usage: /auth <user_id>")
         return
     
     user_id = int(m.command[1])
@@ -27,7 +27,7 @@ async def add_auth_user_handler(c: Client, m: Message):
 @StreamBot.on_message(filters.command('remove') & filters.private)
 async def remove_auth_user_handler(c: Client, m: Message):
     if len(m.command) != 2:
-        await m.reply_text("Usage: /remove_auth <user_id>")
+        await m.reply_text("Usage: /remove <user_id>")
         return
     
     user_id = int(m.command[1])
@@ -135,8 +135,8 @@ async def channel_receive_handler(bot, broadcast):
         return
     try:
         log_msg = await broadcast.forward(chat_id=Var.BIN_CHANNEL)
-        stream_link = f"{Var.URL}watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
-        online_link = f"{Var.URL}{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        stream_link = f"{Var.URL}/watch/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
+        online_link = f"{Var.URL}/{str(log_msg.id)}/{quote_plus(get_name(log_msg))}?hash={get_hash(log_msg)}"
         
         await log_msg.reply_text(
             text=f"**Channel Name:** `{broadcast.chat.title}`\n**CHANNEL ID:** `{broadcast.chat.id}`\n**ʀᴇǫᴜᴇꜱᴛ ᴜʀʟ:** {stream_link}",
@@ -145,7 +145,6 @@ async def channel_receive_handler(bot, broadcast):
         await bot.edit_message_reply_markup(
             chat_id=broadcast.chat.id,
             message_id=broadcast.id,
-            disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
                     [InlineKeyboardButton("ꜱᴛʀᴇᴀᴍ  🖥️", url=stream_link),
