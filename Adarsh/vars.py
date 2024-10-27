@@ -15,7 +15,7 @@ class Var(object):
     name = str(getenv('name', 'YDStreamBot'))
     SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60'))
     WORKERS = int(getenv('WORKERS', '4'))
-    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '-1001657638670'))
+    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '-1001733285589'))
     PORT = int(getenv('PORT', 8081))
     BIND_ADRESS = str(getenv('WEB_SERVER_BIND_ADDRESS', '62.72.31.60'))
     PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))  # 20 minutes
