@@ -196,8 +196,8 @@
     const finalUrl = currentUrl.replace("/watch/", "/");
 
     function playOnline() {
-        const finalLinkUrl = finalUrl;
-        const vlcUrl = `vlc://${finalLinkUrl}`;
+        const finalLinkUrl = currentUrl.replace("/watch/", "/");
+        const vlcUrl = `vlc://${finalLinkUrl.replace("https://", "")}`; // Removes "https://" for VLC
         window.location.href = vlcUrl;
     }
 
