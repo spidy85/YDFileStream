@@ -11,7 +11,7 @@ class Var(object):
     API_ID = int(getenv('API_ID', '25873459'))
     API_HASH = str(getenv('API_HASH', '284b34da96a3a626beada31439cac353'))
     PICS = (environ.get('PICS','https://graph.org/file/3264d2637eda744390199.jpg')).split()
-    BOT_TOKEN = str(getenv('BOT_TOKEN', '7567627899:AAHf2cd3jVnzLH7SgtzJBUINVu6gIMkQR4k'))
+    BOT_TOKEN = str(getenv('BOT_TOKEN', '5644449410:AAGFMv5EYtwnDESMTJ0qDKF0Zt-k8SqJj90'))
     name = str(getenv('name', 'YDStreamBot'))
     SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60'))
     WORKERS = int(getenv('WORKERS', '4'))
