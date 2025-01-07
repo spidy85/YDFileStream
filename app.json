@@ -1,5 +1,5 @@
 {
-  "name": "Rahul",
+  "name": "YDFileStream",
   "description": "A Pyrogram Telegram bot to Stream Telegram files to web.",
   "keywords": [
       "telegram",
@@ -13,10 +13,10 @@
       "media",
       "bot"
     ],
-  "repository": "https://github.com/CodeXBots/File-Stream-Bot",
+  "repository": "https://github.com/spidy85/YDFileStream",
   "success_url": "/",
   "logo": "https://i.ibb.co/MnMZ1Sy/download-1.jpg",
-  "website": "http://youtube.com/@RahulReviews",
+  "website": "http://cloud.spidy.eu.org/",
   "env": {
       "ENV": {
           "description": "Set this to True if you don't want to crash the bot",
@@ -100,7 +100,7 @@
   "formation": {
       "web": {
           "quantity": 1,
-          "size": "free"
+          "size": "basic"
       }
   }
 }
