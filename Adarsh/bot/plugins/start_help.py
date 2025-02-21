@@ -124,7 +124,7 @@ For streaming: Simply copy and paste the link into your video player to start st
         )
     )
 
-@Client.on_message(filters.command("restart") & filters.user(Var.OWNER_ID))
+@StreamBot.on_message(filters.command("restart") & filters.user(Var.OWNER_ID))
 async def stop_button(bot, message):
     msg = await bot.send_message(text="**🔄 𝙿𝚁𝙾𝙲𝙴𝚂𝚂𝙴𝚂 𝚂𝚃𝙾𝙿𝙴𝙳. 𝙱𝙾𝚃 𝙸𝚂 𝚁𝙴𝚂𝚃𝙰𝚁𝚃𝙸𝙽𝙶...**", chat_id=message.chat.id)       
     await asyncio.sleep(3)
