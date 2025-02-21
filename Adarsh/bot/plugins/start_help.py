@@ -11,7 +11,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import UserNotParticipant
 from Adarsh.utils.file_properties import get_name, get_hash, get_media_file_size
 db = Database(Var.DATABASE_URL, Var.name)
-from .vars import Var.OWNER_ID
+from .vars import Var
 from pyrogram.types import ReplyKeyboardMarkup
             
             
@@ -124,7 +124,7 @@ For streaming: Simply copy and paste the link into your video player to start st
         )
     )
 
-@Client.on_message(filters.command("restart") & filters.user(OWNER_ID))
+@Client.on_message(filters.command("restart") & filters.user(Var.OWNER_ID))
 async def stop_button(bot, message):
     msg = await bot.send_message(text="**🔄 𝙿𝚁𝙾𝙲𝙴𝚂𝚂𝙴𝚂 𝚂𝚃𝙾𝙿𝙴𝙳. 𝙱𝙾𝚃 𝙸𝚂 𝚁𝙴𝚂𝚃𝙰𝚁𝚃𝙸𝙽𝙶...**", chat_id=message.chat.id)       
     await asyncio.sleep(3)
