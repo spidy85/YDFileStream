@@ -10,7 +10,8 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import UserNotParticipant
 from Adarsh.utils.file_properties import get_name, get_hash, get_media_file_size
-db = Database(Var.DATABASE_URL, Var.name, Var.OWNER_ID)
+db = Database(Var.DATABASE_URL, Var.name)
+from .vars import Var.OWNER_ID
 from pyrogram.types import ReplyKeyboardMarkup
             
             
